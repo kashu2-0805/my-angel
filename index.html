@@ -34,6 +34,24 @@ h1,h2,h3{line-height:1.4;margin:0 0 12px}
 h1{font-size:1.65rem}
 h2{font-size:1.25rem}
 h3{font-size:1.05rem}
+
+.angel-ranking-title{
+  margin-bottom:8px;
+  padding-bottom:10px;
+  color:#6f5f4d;
+  font-size:1.45rem;
+  text-align:center;
+  border-bottom:2px solid var(--take);
+}
+
+.time-ranking-title{
+  margin-bottom:8px;
+  color:#6f5f4d;
+  font-size:1.2rem;
+}
+
+
+
 p{margin:0 0 12px}
 button,input,textarea{font:inherit}
 button{cursor:pointer}
@@ -570,21 +588,46 @@ nav.bottom button[aria-current="page"]{
         <p class="muted" id="homeText" style="margin-top:12px"></p>
       </div>
 
-      <div class="card">
-        <h3>🕊️ 与えてくれた人ランキング</h3>
-        <p class="muted">
-          選択した期間に、あなたへ多く与えてくれた人たちです。
-        </p>
-        <div id="rankAngel"></div>
-      </div>
 
-      <div class="card">
-        <h3>⏳ 時間を費やした人ランキング</h3>
-        <p class="muted">
-          選択した期間に、一緒にいた時間や作業時間が多かった人たちです。
-        </p>
-        <div id="rankTime"></div>
-      </div>
+
+<div class="card">
+  <h3 class="angel-ranking-title">
+    🕊️ マイ・エンジェルランキング
+  </h3>
+
+  <div class="tabs" id="angelTabs" style="justify-content:center;">
+    <button type="button" data-period="today" aria-selected="false">今日</button>
+    <button type="button" data-period="week" aria-selected="false">今週</button>
+    <button type="button" data-period="month" aria-selected="false">今月</button>
+    <button type="button" data-period="year" aria-selected="false">今年</button>
+    <button type="button" data-period="all" aria-selected="true">累計</button>
+  </div>
+
+  <p class="muted">
+    上のボタンで期間を切り替えられます。<br>
+    あなたへたくさんの優しさや支えを届けてくれた人たちです。
+  </p>
+
+  <div id="rankAngel"></div>
+</div>
+
+<div class="card">
+  <h3 class="time-ranking-title">
+    ⏳ ご縁の時間ランキング
+  </h3>
+
+  <p class="muted">
+    選択した期間に、一緒に過ごした時間や、
+    お互いのために使った時間が多かった人たちです。
+  </p>
+
+  <div id="rankTime"></div>
+</div>
+
+
+
+
+
     </section>
 
     <!-- 人物 -->
@@ -803,6 +846,9 @@ try {
 }
 
 let currentPeriod = "all";
+let angelPeriod = "all";
+
+
 let peopleSort = "take";
 let previousScreen = "s-home";
 
@@ -1032,6 +1078,76 @@ function getFilteredLogs(){
   });
 }
 
+
+
+function getLogsByPeriod(period){
+  const today = new Date();
+  today.setHours(12,0,0,0);
+
+  return db.logs.filter(log => {
+    if(period === "all") return true;
+
+    const d = dateFromString(log.date);
+    d.setHours(12,0,0,0);
+
+    if(period === "today"){
+      return d.toDateString() === today.toDateString();
+    }
+
+    if(period === "month"){
+      return d.getFullYear() === today.getFullYear() &&
+             d.getMonth() === today.getMonth();
+    }
+
+    if(period === "year"){
+      return d.getFullYear() === today.getFullYear();
+    }
+
+    if(period === "week"){
+      const start = new Date(today);
+      const offset = (today.getDay() + 6) % 7;
+      start.setDate(today.getDate() - offset);
+
+      const end = new Date(start);
+      end.setDate(start.getDate() + 6);
+
+      return d >= start && d <= end;
+    }
+
+    return true;
+  });
+}
+
+function renderAngelRanking(){
+  const logs = getLogsByPeriod(angelPeriod);
+  const stats = {};
+
+  logs.forEach(log => {
+    const name = log.person || "名前未設定";
+    if(!stats[name]) stats[name] = {take:0};
+    if(log.dir === "take") stats[name].take += effectiveAmount(log);
+  });
+
+  const angels = Object.entries(stats)
+    .map(([name,value]) => ({name,...value}))
+    .filter(p => p.take > 0)
+    .sort((a,b) => b.take - a.take)
+    .slice(0,5);
+
+  document.getElementById("rankAngel").innerHTML =
+    angels.length
+      ? angels.map((p,i) => `
+        <div class="row">
+          <div class="rank-heading">
+            <span class="rank-no">${i + 1}</span>
+            <span class="name">${escapeHtml(p.name)}</span>
+          </div>
+          <span class="tag t">もらった：${yen(p.take)}</span>
+        </div>
+      `).join("")
+      : '<div class="empty">この期間のデータはありません</div>';
+}
+
 function renderHome(){
   const logs = getFilteredLogs();
   let give = 0;
@@ -1045,9 +1161,7 @@ function renderHome(){
     if(log.dir === "give") give += amount;
     else take += amount;
 
-    if(!stats[name]) stats[name] = {take:0,time:0};
-
-    if(log.dir === "take") stats[name].take += amount;
+    if(!stats[name]) stats[name] = {time:0};
     stats[name].time += Number(log.hours) || 0;
   });
 
@@ -1065,27 +1179,11 @@ function renderHome(){
       ? "この期間には、まだ記録がありません。"
       : "数字は相手を評価するためではなく、見過ごしていた支えや、自分が届けた優しさを振り返るための目安です。";
 
+  renderAngelRanking();
+
   const people = Object.entries(stats).map(([name,value]) => ({
     name,...value
   }));
-
-  const angels = [...people]
-    .filter(p => p.take > 0)
-    .sort((a,b) => b.take - a.take)
-    .slice(0,5);
-
-  document.getElementById("rankAngel").innerHTML =
-    angels.length
-      ? angels.map((p,i) => `
-        <div class="row">
-          <div class="rank-heading">
-            <span class="rank-no">${i + 1}</span>
-            <span class="name">${escapeHtml(p.name)}</span>
-          </div>
-          <span class="tag t">もらった：${yen(p.take)}</span>
-        </div>
-      `).join("")
-      : '<div class="empty">この期間のデータはありません</div>';
 
   const times = [...people]
     .filter(p => p.time > 0)
@@ -1106,6 +1204,25 @@ function renderHome(){
       : '<div class="empty">この期間のデータはありません</div>';
 }
 
+document.querySelectorAll("#angelTabs button").forEach(button => {
+  button.onclick = () => {
+    angelPeriod = button.dataset.period;
+
+    document.querySelectorAll("#angelTabs button").forEach(tab => {
+      tab.setAttribute(
+        "aria-selected",
+        tab === button ? "true" : "false"
+      );
+    });
+
+    renderAngelRanking();
+  };
+});
+
+
+
+
+  
 document.querySelectorAll("#homeTabs button").forEach(button => {
   button.onclick = () => {
     currentPeriod = button.dataset.period;
