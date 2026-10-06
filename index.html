@@ -3,328 +3,345 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="description" content="日々のギブとテイクを記録して、忘れていた優しさに気づくための記録帳です。">
+<meta name="description" content="日々のギブとテイクを記録し、忘れていた優しさに気づくための記録帳です。">
 <meta name="theme-color" content="#f7f4ef">
 <title>マイ・エンジェルを探せ！</title>
 
 <style>
-:root {
-  --bg: #f7f4ef;
-  --card: #ffffff;
-  --ink: #3d3a35;
-  --ink-soft: #6f6a63;
-  --line: #e4ded4;
-  --give: #8fb9a8;
-  --take: #e3b7a0;
-  --accent: #9a8c7a;
-  --focus: #4a6fa5;
-  --danger: #a45f5f;
-  --radius: 16px;
+:root{
+  --bg:#f7f4ef;
+  --card:#ffffff;
+  --ink:#3d3a35;
+  --soft:#6f6a63;
+  --line:#e4ded4;
+  --give:#8fb9a8;
+  --take:#e3b7a0;
+  --accent:#9a8c7a;
+  --focus:#4a6fa5;
+  --danger:#a45f5f;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;
+  font-size:16px;
+  line-height:1.65;
+  padding-bottom:calc(82px + env(safe-area-inset-bottom));
+}
+h1,h2,h3{line-height:1.4;margin:0 0 12px}
+h1{font-size:1.65rem}
+h2{font-size:1.25rem}
+h3{font-size:1.05rem}
+p{margin:0 0 12px}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+.wrap{max-width:600px;margin:0 auto;padding:16px}
+.screen{display:none}
+.screen.active{display:block}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:16px;
+}
+.muted{color:var(--soft);font-size:.88rem}
+.center{text-align:center}
+.empty{padding:32px 16px;text-align:center;color:var(--soft)}
+
+header.app{
+  position:sticky;
+  top:0;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:calc(12px + env(safe-area-inset-top)) 16px 12px;
+  background:var(--card);
+  border-bottom:1px solid var(--line);
+}
+header .ttl{font-weight:700;margin:0;font-size:1.05rem}
+header .sub{font-size:.73rem;color:var(--soft);margin:2px 0 0}
+.btn-help{
+  border:0;
+  border-radius:999px;
+  background:#efe9e0;
+  color:var(--ink);
+  padding:7px 13px;
+  font-size:.85rem;
+  font-weight:700;
 }
 
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+#welcome{display:none}
+#welcome.show{display:block}
+.welcome-inner{
+  max-width:560px;
+  min-height:100vh;
+  margin:0 auto;
+  padding:40px 24px calc(40px + env(safe-area-inset-bottom));
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.angel-mark{text-align:center;font-size:3rem;margin-bottom:8px}
+.welcome-subtitle{
+  text-align:center;
+  color:var(--soft);
+  font-size:.88rem;
+  margin-bottom:24px;
+}
+.note{
+  background:#fffdf8;
+  border:1px dashed var(--line);
+  border-radius:12px;
+  color:var(--soft);
+  font-size:.85rem;
+  padding:14px;
+  margin:20px 0 28px;
 }
 
-html, body { margin: 0; padding: 0; }
+.btn{
+  display:block;
+  width:100%;
+  border:0;
+  border-radius:14px;
+  padding:15px;
+  margin-bottom:12px;
+  background:var(--accent);
+  color:#fff;
+  font-weight:700;
+}
+.btn.ghost{
+  background:#fff;
+  color:var(--ink);
+  border:1.5px solid var(--line);
+}
+.btn.sub{background:#efe9e0;color:var(--ink)}
+.btn.danger{
+  background:#fff;
+  color:var(--danger);
+  border:1.5px solid #e2c8c8;
+}
+.btn.inline{width:auto;padding:9px 16px}
 
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
-  font-size: 16px;
-  line-height: 1.65;
-  padding-bottom: calc(82px + env(safe-area-inset-bottom));
+label{
+  display:block;
+  margin:16px 0 6px;
+  font-size:.92rem;
+  font-weight:700;
+}
+input,textarea{
+  width:100%;
+  padding:13px;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  color:var(--ink);
+}
+textarea{min-height:88px;resize:vertical}
+
+.seg{display:flex;gap:10px;margin-top:7px}
+.seg button{
+  flex:1;
+  padding:14px 6px;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  color:var(--soft);
+  font-weight:700;
+}
+.seg .give[aria-pressed="true"]{
+  background:var(--give);
+  border-color:var(--give);
+  color:#fff;
+}
+.seg .take[aria-pressed="true"]{
+  background:var(--take);
+  border-color:var(--take);
+  color:#fff;
 }
 
-h1, h2, h3 { line-height: 1.4; margin: 0 0 12px; }
-h1 { font-size: 1.65rem; }
-h2 { font-size: 1.25rem; }
-h3 { font-size: 1.05rem; }
-p { margin: 0 0 12px; }
-
-button, input, textarea { font: inherit; }
-button { cursor: pointer; }
-:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
-
-.wrap { max-width: 600px; margin: 0 auto; padding: 16px; }
-.screen { display: none; }
-.screen.active { display: block; animation: fade 0.25s ease; }
-
-@keyframes fade {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:12px;
+}
+.stat{
+  padding:13px 8px;
+  text-align:center;
+  background:#fffdf8;
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+.stat-label{font-size:.78rem;color:var(--soft)}
+.big{
+  font-size:1.3rem;
+  font-weight:700;
+  overflow-wrap:anywhere;
 }
 
-.card {
-  margin-bottom: 16px;
-  padding: 16px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
+.bar{
+  display:flex;
+  height:22px;
+  overflow:hidden;
+  background:#eee9e1;
+  border-radius:999px;
+  margin:10px 0 6px;
+}
+.bar.small{height:13px;margin:8px 0}
+.bar .g{background:var(--give);transition:width .35s}
+.bar .t{background:var(--take);transition:width .35s}
+
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  color:var(--soft);
+  font-size:.82rem;
+}
+.dot{
+  display:inline-block;
+  width:10px;
+  height:10px;
+  margin-right:5px;
+  border-radius:50%;
+  vertical-align:middle;
+}
+.dot.g{background:var(--give)}
+.dot.t{background:var(--take)}
+
+.tabs{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  margin-bottom:14px;
+  padding-bottom:4px;
+  scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  flex:0 0 auto;
+  padding:9px 14px;
+  border:1.5px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  color:var(--soft);
+  font-size:.87rem;
+}
+.tabs button[aria-selected="true"]{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#fff;
+  font-weight:700;
 }
 
-.muted { color: var(--ink-soft); font-size: 0.88rem; }
-.center { text-align: center; }
-.empty { padding: 34px 16px; color: var(--ink-soft); text-align: center; }
+.row{
+  display:block;
+  width:100%;
+  margin-bottom:11px;
+  padding:15px;
+  text-align:left;
+  color:var(--ink);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+}
+.row .name{font-weight:700;font-size:1.05rem;margin-bottom:4px}
+.row .meta{color:var(--soft);font-size:.84rem}
+.rank-heading{display:flex;align-items:center;margin-bottom:7px}
+.rank-no{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  width:28px;
+  height:28px;
+  margin-right:8px;
+  border-radius:50%;
+  background:#efe9e0;
+  font-size:.82rem;
+  font-weight:700;
+}
+.tag{
+  display:inline-block;
+  margin:5px 5px 0 0;
+  padding:3px 9px;
+  border-radius:999px;
+  background:#efe9e0;
+  color:var(--soft);
+  font-size:.75rem;
+}
+.tag.g{background:#e4f0ea;color:#497a66}
+.tag.t{background:#f7e8e0;color:#946249}
 
-header.app {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
-  background: var(--card);
-  border-bottom: 1px solid var(--line);
+.help-list{margin:0;padding-left:21px}
+.help-list li{margin-bottom:12px}
+
+.sample-alert{
+  padding:16px;
+  margin-bottom:16px;
+  color:#6d5600;
+  background:#fff3cd;
+  border:2px solid #e2bd42;
+  border-radius:14px;
+}
+.sample-alert p{margin-bottom:12px}
+
+nav.bottom{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:20;
+  display:flex;
+  padding-bottom:env(safe-area-inset-bottom);
+  background:var(--card);
+  border-top:1px solid var(--line);
+}
+nav.bottom button{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  padding:9px 2px 11px;
+  border:0;
+  background:none;
+  color:var(--soft);
+  font-size:.7rem;
+}
+nav.bottom .ic{font-size:1.3rem;line-height:1}
+nav.bottom button[aria-current="page"]{
+  color:var(--accent);
+  font-weight:700;
 }
 
-header.app .ttl { margin: 0; font-size: 1.05rem; font-weight: 700; }
-header.app .sub { margin: 2px 0 0; color: var(--ink-soft); font-size: 0.73rem; }
-
-.btn-help {
-  flex: 0 0 auto;
-  padding: 7px 13px;
-  color: var(--ink);
-  font-size: 0.85rem;
-  font-weight: 700;
-  background: #efe9e0;
-  border: 0;
-  border-radius: 999px;
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:94px;
+  z-index:60;
+  max-width:88%;
+  padding:12px 20px;
+  color:#fff;
+  background:var(--ink);
+  border-radius:999px;
+  text-align:center;
+  font-size:.9rem;
+  opacity:0;
+  pointer-events:none;
+  transform:translateX(-50%) translateY(15px);
+  transition:.25s;
 }
-
-#welcome { display: none; }
-#welcome.show { display: block; }
-
-.welcome-inner {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 560px;
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: 40px 24px calc(40px + env(safe-area-inset-bottom));
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
 }
-
-.angel-mark { margin-bottom: 8px; font-size: 3rem; text-align: center; }
-.welcome-subtitle { margin-bottom: 24px; color: var(--ink-soft); font-size: 0.88rem; text-align: center; }
-
-.note {
-  margin: 20px 0 28px;
-  padding: 14px;
-  color: var(--ink-soft);
-  font-size: 0.85rem;
-  background: #fffdf8;
-  border: 1px dashed var(--line);
-  border-radius: 12px;
-}
-
-.btn {
-  display: block;
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 15px;
-  color: #fff;
-  font-weight: 700;
-  background: var(--accent);
-  border: 0;
-  border-radius: 14px;
-}
-
-.btn:active { transform: scale(0.985); }
-.btn.ghost { color: var(--ink); background: #fff; border: 1.5px solid var(--line); }
-.btn.sub { color: var(--ink); background: #efe9e0; }
-.btn.danger { color: var(--danger); background: #fff; border: 1.5px solid #e2c8c8; }
-.btn.inline { width: auto; padding: 9px 16px; }
-
-label { display: block; margin: 16px 0 6px; font-size: 0.92rem; font-weight: 700; }
-
-input, textarea {
-  width: 100%;
-  padding: 13px;
-  color: var(--ink);
-  font-size: 1rem;
-  background: #fff;
-  border: 1.5px solid var(--line);
-  border-radius: 12px;
-}
-
-textarea { min-height: 88px; resize: vertical; }
-
-.seg { display: flex; gap: 10px; margin-top: 7px; }
-
-.seg button {
-  flex: 1;
-  padding: 14px 6px;
-  color: var(--ink-soft);
-  font-weight: 700;
-  background: #fff;
-  border: 1.5px solid var(--line);
-  border-radius: 12px;
-}
-
-.seg button.give[aria-pressed="true"] { color: #fff; background: var(--give); border-color: var(--give); }
-.seg button.take[aria-pressed="true"] { color: #fff; background: var(--take); border-color: var(--take); }
-
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-
-.stat {
-  padding: 13px 8px;
-  text-align: center;
-  background: #fffdf8;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-}
-
-.stat-label { margin-bottom: 3px; color: var(--ink-soft); font-size: 0.78rem; }
-.big { font-size: 1.3rem; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
-
-.bar {
-  display: flex;
-  height: 22px;
-  margin: 10px 0 6px;
-  overflow: hidden;
-  background: #eee9e1;
-  border-radius: 999px;
-}
-
-.bar.small { height: 13px; margin: 8px 0; }
-.bar .g { background: var(--give); transition: width 0.35s ease; }
-.bar .t { background: var(--take); transition: width 0.35s ease; }
-
-.legend { display: flex; flex-wrap: wrap; gap: 14px; color: var(--ink-soft); font-size: 0.82rem; }
-
-.dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 5px;
-  vertical-align: middle;
-  border-radius: 50%;
-}
-
-.dot.g { background: var(--give); }
-.dot.t { background: var(--take); }
-
-.row {
-  display: block;
-  width: 100%;
-  margin-bottom: 11px;
-  padding: 15px;
-  color: var(--ink);
-  text-align: left;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-}
-
-.row .name { margin-bottom: 4px; font-size: 1.05rem; font-weight: 700; }
-.row .meta { color: var(--ink-soft); font-size: 0.84rem; }
-
-.rank-heading { display: flex; align-items: center; margin-bottom: 7px; }
-
-.rank-no {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
-  margin-right: 8px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  background: #efe9e0;
-  border-radius: 50%;
-}
-
-.tag {
-  display: inline-block;
-  margin: 5px 5px 0 0;
-  padding: 3px 9px;
-  color: var(--ink-soft);
-  font-size: 0.75rem;
-  background: #efe9e0;
-  border-radius: 999px;
-}
-
-.tag.g { color: #497a66; background: #e4f0ea; }
-.tag.t { color: #946249; background: #f7e8e0; }
-
-.tabs {
-  display: flex;
-  gap: 7px;
-  margin-bottom: 14px;
-  padding-bottom: 4px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.tabs::-webkit-scrollbar { display: none; }
-
-.tabs button {
-  flex: 0 0 auto;
-  padding: 9px 14px;
-  color: var(--ink-soft);
-  font-size: 0.87rem;
-  background: #fff;
-  border: 1.5px solid var(--line);
-  border-radius: 999px;
-}
-
-.tabs button[aria-selected="true"] { color: #fff; font-weight: 700; background: var(--accent); border-color: var(--accent); }
-
-nav.bottom {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 20;
-  display: flex;
-  padding-bottom: env(safe-area-inset-bottom);
-  background: var(--card);
-  border-top: 1px solid var(--line);
-}
-
-nav.bottom button {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 9px 2px 11px;
-  color: var(--ink-soft);
-  font-size: 0.7rem;
-  background: none;
-  border: 0;
-}
-
-nav.bottom .ic { font-size: 1.3rem; line-height: 1; }
-nav.bottom button[aria-current="page"] { color: var(--accent); font-weight: 700; }
-
-.toast {
-  position: fixed;
-  bottom: 94px;
-  left: 50%;
-  z-index: 60;
-  max-width: 88%;
-  padding: 12px 20px;
-  color: #fff;
-  font-size: 0.9rem;
-  text-align: center;
-  pointer-events: none;
-  background: var(--ink);
-  border-radius: 999px;
-  opacity: 0;
-  transform: translateX(-50%) translateY(15px);
-  transition: 0.25s;
-}
-
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-.help-list { margin: 0; padding-left: 21px; }
-.help-list li { margin-bottom: 12px; }
 </style>
 </head>
 
@@ -333,8 +350,14 @@ nav.bottom button[aria-current="page"] { color: var(--accent); font-weight: 700;
 <section id="welcome" aria-labelledby="welcomeTitle">
   <div class="welcome-inner">
     <div class="angel-mark" aria-hidden="true">🕊️</div>
-    <h1 id="welcomeTitle" class="center">マイ・エンジェルを探せ！</h1>
-    <p class="welcome-subtitle">ギブ＆テイクの可視化で、真の支援者に感謝しよう</p>
+
+    <h1 id="welcomeTitle" class="center">
+      マイ・エンジェルを探せ！
+    </h1>
+
+    <p class="welcome-subtitle">
+      ギブ＆テイクの可視化で、真の支援者に感謝しよう
+    </p>
 
     <p>
       あなたの周囲にいる人は、どんなタイプでしょうか？<br>
@@ -342,7 +365,7 @@ nav.bottom button[aria-current="page"] { color: var(--accent); font-weight: 700;
       「自分ばかり与えている」と不満を感じる相手。
     </p>
 
-    <p>それって、よく観察すると、もしかしたら・・・</p>
+    <p>それって、よく観察すると、もしかしたら……。</p>
 
     <p>
       実はあなたの周りには、気づかないうちに支えてくれている人が
@@ -355,10 +378,17 @@ nav.bottom button[aria-current="page"] { color: var(--accent); font-weight: 700;
       忘れていた優しさに気づくための記録帳です。
     </div>
 
-    <button type="button" class="btn" id="btnSample">サンプルを見る</button>
-    <button type="button" class="btn ghost" id="btnEmpty">空のまま始める</button>
+    <button type="button" class="btn" id="btnSample">
+      サンプルを見る
+    </button>
 
-    <p class="muted center">記録は、このブラウザの中に保存されます。</p>
+    <button type="button" class="btn ghost" id="btnEmpty">
+      空のまま始める
+    </button>
+
+    <p class="muted center">
+      記録は、このブラウザの中に保存されます。
+    </p>
   </div>
 </section>
 
@@ -368,81 +398,151 @@ nav.bottom button[aria-current="page"] { color: var(--accent); font-weight: 700;
       <p class="ttl">マイ・エンジェルを探せ！</p>
       <p class="sub">忘れていた優しさに気づく記録帳</p>
     </div>
-    <button type="button" class="btn-help" id="btnHelp" aria-label="使い方を見る">使い方</button>
+
+    <button type="button" class="btn-help" id="btnHelp">
+      使い方
+    </button>
   </header>
 
   <main class="wrap">
 
-    <section class="screen" id="s-help" aria-labelledby="helpTitle">
-      <button type="button" class="btn sub inline" id="backFromHelp">← 戻る</button>
-      <h2 id="helpTitle">使い方とアプリの思い</h2>
+    <!-- 使い方 -->
+    <section class="screen" id="s-help">
+      <button type="button" class="btn sub inline" id="backFromHelp">
+        ← 戻る
+      </button>
 
-      <div class="card" style="background:#fffdf8;">
+      <h2>使い方とアプリの思い</h2>
+
+      <div class="card" style="background:#fffdf8">
         <h3>🕊️ このアプリの思い</h3>
+
         <p>
-          人間、長く付き合っていると、「奢ってもらって当たり前」
+          人間、長く付き合っていると、
+          「奢ってもらって当たり前」
           「世話してあげるのが私の役目」など、
           態度がルーティンになってしまうことがあります。
         </p>
+
         <p>
           このアプリは、あなたが誰にどれだけ与えているか、
           あるいはどれだけ与えられているかに、
           改めて気づくための記録帳です。
         </p>
-        <p>
-          家族や友人、フリーランスの仕事なら取引先など、
-          支え合いのバランスが可視化され、改めて感謝が湧いてくる可能性もあります。
-        </p>
+
         <p>
           損得を競うのではなく、見過ごしていた感謝や、
-          自分の優しさに気づく機会にして活用していただけると嬉しいです。
+          自分の優しさに気づく機会にしてください。
+        </p>
+
+        <p>
+          フリーランスの方であれば、どの取引先からどれくらい
+          仕事を発注してもらっているか、自分がそれぞれの取引先に
+          どれくらい時間を使っているかを振り返ることもできます。
+          日頃の感謝を思い出すとともに、これからの仕事の優先順位を
+          考えるための一つの目安としても活用できます。
+        </p>
+
+        <p class="muted">
+          ※このアプリの集計は、正式な会計・売上管理の代わりではなく、
+          人との関わりを振り返るための目安です。
         </p>
       </div>
 
       <div class="card">
         <h3>✍️ 記録の入力方法</h3>
+
         <ul class="help-list">
-          <li><strong>いつ：</strong>その出来事があった日を選びます。</li>
-          <li><strong>誰：</strong>相手の名前やニックネームを入力します。</li>
-          <li><strong>何：</strong>プレゼント、仕事、手伝い、食事など、起きたことを入力します。</li>
-          <li><strong>あげた／もらった：</strong>あなたから相手へ与えた場合は「あげた」、相手から受け取った場合は「もらった」を選びます。</li>
-          <li><strong>金額：</strong>実際のお金だけではなく、プレゼントや支援なども「だいたいこのくらい」と思う金額に換算して入力します。</li>
-          <li><strong>時間：</strong>一緒にいた時間や、作業に費やした時間を入力します。金額を0円または空欄にした場合は、「時間給 × 時間」で自動的に金額換算されます。金額を入力した場合、時間は金額に加算せず、時間の記録として別に集計します。</li>
-          <li><strong>メモ：</strong>そのときの状況や、忘れたくないことを自由に残せます。</li>
+          <li>
+            <strong>いつ：</strong>
+            その出来事があった日を選びます。
+          </li>
+          <li>
+            <strong>誰：</strong>
+            相手の名前やニックネームを入力します。
+          </li>
+          <li>
+            <strong>何：</strong>
+            プレゼント、仕事、手伝い、食事など、
+            起きたことを入力します。
+          </li>
+          <li>
+            <strong>あげた／もらった：</strong>
+            あなたから相手へ与えた場合は「あげた」、
+            相手から受け取った場合は「もらった」を選びます。
+          </li>
+          <li>
+            <strong>金額：</strong>
+            実際のお金だけでなく、プレゼントや支援なども
+            「だいたいこのくらい」と思う金額に換算します。
+          </li>
+          <li>
+            <strong>時間：</strong>
+            一緒にいた時間や作業に費やした時間を入力します。
+            金額を0円または空欄にした場合は、
+            「時間給 × 時間」で自動的に金額換算されます。
+            金額を入力した場合、時間は金額に加算せず、
+            時間の記録として別に集計します。
+          </li>
+          <li>
+            <strong>メモ：</strong>
+            そのときの状況や、忘れたくないことを自由に残せます。
+          </li>
         </ul>
       </div>
 
       <div class="card">
         <h3>🔒 記録の保存とプライバシー</h3>
+
         <p>
           入力した記録は、このアプリのサーバーやGitHubには送信されず、
           お使いの端末のブラウザ内に保存されます。
         </p>
+
         <ul class="help-list">
-          <li>同じ公開URLを利用していても、ほかの利用者の記録と混ざることはありません。</li>
-          <li>記録は、入力に使用した端末とブラウザに保存されます。別のスマートフォンやパソコン、別のブラウザには自動的に引き継がれません。</li>
-          <li>異なるURLで開いた場合は、それぞれ別の保存場所として扱われます。</li>
-          <li>ブラウザの履歴やWebサイトデータを削除した場合、アプリの記録も消えることがあります。</li>
-          <li>プライベートブラウズやシークレットモードでは、記録が正常に保存されない、または終了時に消える場合があります。</li>
-          <li>家族などと同じ端末・同じブラウザを共有している場合は、そのブラウザを使う人に記録が表示される可能性があります。</li>
+          <li>
+            同じ公開URLを利用していても、ほかの利用者の記録と
+            混ざることはありません。
+          </li>
+          <li>
+            記録は、入力に使用した端末とブラウザに保存されます。
+            別の端末やブラウザには自動的に引き継がれません。
+          </li>
+          <li>
+            異なるURLで開いた場合は、それぞれ別の保存場所になります。
+          </li>
+          <li>
+            ブラウザの履歴やWebサイトデータを削除すると、
+            アプリの記録も消えることがあります。
+          </li>
+          <li>
+            プライベートブラウズやシークレットモードでは、
+            終了時に記録が消える場合があります。
+          </li>
+          <li>
+            同じ端末・同じブラウザを共有している人には、
+            記録が表示される可能性があります。
+          </li>
         </ul>
-        <p class="muted" style="margin-top:14px;">
-          現在のバージョンにはログイン機能や端末間の同期機能はありません。
-          大切な記録を長期間保存するためのバックアップ機能は、今後の追加を予定しています。
+
+        <p class="muted">
+          現在はログイン機能、端末間の同期機能、
+          バックアップ機能には対応していません。
         </p>
       </div>
     </section>
 
-    <section class="screen" id="s-home" aria-labelledby="homeTitle">
-      <h2 id="homeTitle">ホーム</h2>
+    <!-- ホーム -->
+    <section class="screen" id="s-home">
+      <h2>ホーム</h2>
 
       <div class="card">
-        <div class="tabs" id="homeTabs" role="tablist" aria-label="集計期間">
-          <button type="button" role="tab" data-period="today" aria-selected="false">今日</button>
-          <button type="button" role="tab" data-period="week" aria-selected="false">今週</button>
-          <button type="button" role="tab" data-period="month" aria-selected="false">今月</button>
-          <button type="button" role="tab" data-period="year" aria-selected="false">今年</button>
-          <button type="button" role="tab" data-period="all" aria-selected="true">開始以来</button>
+        <div class="tabs" id="homeTabs" role="tablist">
+          <button type="button" data-period="today" aria-selected="false">今日</button>
+          <button type="button" data-period="week" aria-selected="false">今週</button>
+          <button type="button" data-period="month" aria-selected="false">今月</button>
+          <button type="button" data-period="year" aria-selected="false">今年</button>
+          <button type="button" data-period="all" aria-selected="true">開始以来</button>
         </div>
 
         <div class="grid2">
@@ -450,13 +550,14 @@ nav.bottom button[aria-current="page"] { color: var(--accent); font-weight: 700;
             <div class="stat-label">あなたがあげた</div>
             <div class="big" id="sumGive">￥0</div>
           </div>
+
           <div class="stat">
             <div class="stat-label">あなたがもらった</div>
             <div class="big" id="sumTake">￥0</div>
           </div>
         </div>
 
-        <div class="bar" id="homeBar" role="img" aria-label="あげた金額ともらった金額の割合">
+        <div class="bar" id="homeBar">
           <div class="g" id="barG" style="width:50%"></div>
           <div class="t" id="barT" style="width:50%"></div>
         </div>
@@ -466,42 +567,72 @@ nav.bottom button[aria-current="page"] { color: var(--accent); font-weight: 700;
           <span><span class="dot t"></span>もらった</span>
         </div>
 
-        <p class="muted" id="homeText" style="margin-top:12px;"></p>
+        <p class="muted" id="homeText" style="margin-top:12px"></p>
       </div>
 
       <div class="card">
         <h3>🕊️ 与えてくれた人ランキング</h3>
-        <p class="muted">選択した期間に、あなたへ多く与えてくれた人たちです。</p>
+        <p class="muted">
+          選択した期間に、あなたへ多く与えてくれた人たちです。
+        </p>
         <div id="rankAngel"></div>
       </div>
 
       <div class="card">
         <h3>⏳ 時間を費やした人ランキング</h3>
-        <p class="muted">選択した期間に、一緒にいた時間や作業時間が多かった人たちです。</p>
+        <p class="muted">
+          選択した期間に、一緒にいた時間や作業時間が多かった人たちです。
+        </p>
         <div id="rankTime"></div>
       </div>
     </section>
 
-    <section class="screen" id="s-people" aria-labelledby="peopleTitle">
-      <h2 id="peopleTitle">人物ごとの記録</h2>
-      <div class="tabs" id="peopleSortTabs" role="tablist" aria-label="人物の並び順">
-        <button type="button" role="tab" data-sort="take" aria-selected="true">与えてくれた順</button>
-        <button type="button" role="tab" data-sort="time" aria-selected="false">時間が多い順</button>
+    <!-- 人物 -->
+    <section class="screen" id="s-people">
+      <h2>人物ごとの記録</h2>
+
+      <div class="tabs" id="peopleSortTabs">
+        <button type="button" data-sort="take" aria-selected="true">
+          与えてくれた順
+        </button>
+        <button type="button" data-sort="time" aria-selected="false">
+          時間が多い順
+        </button>
       </div>
-      <p class="muted" id="peopleSortDescription">あなたにたくさん与えてくれた順に表示しています。</p>
+
+      <p class="muted" id="peopleSortDescription"></p>
       <div id="peopleList"></div>
     </section>
 
-    <section class="screen" id="s-detail" aria-labelledby="detailTitle">
-      <button type="button" class="btn sub inline" id="backPeople">← 一覧へ戻る</button>
+    <!-- 人物詳細 -->
+    <section class="screen" id="s-detail">
+      <button type="button" class="btn sub inline" id="backPeople">
+        ← 一覧へ戻る
+      </button>
+
       <h2 id="detailTitle">人物の記録</h2>
       <div class="card" id="detailBody"></div>
+
       <h3>この人との記録</h3>
       <div id="detailLogs"></div>
     </section>
 
-    <section class="screen" id="s-add" aria-labelledby="addTitle">
+    <!-- 記録追加 -->
+    <section class="screen" id="s-add">
       <h2 id="addTitle">記録を追加</h2>
+
+      <div id="sampleInputAlert" class="sample-alert" role="alert" hidden>
+        <p>
+          ⚠️ <strong>現在はサンプルデータが表示されています。</strong><br>
+          自分の記録を始める前に、設定画面から
+          「すべてのデータを消去」を押してください。
+        </p>
+
+        <button type="button" class="btn sub" id="btnGoToSettings" style="margin:0">
+          設定画面へ行く
+        </button>
+      </div>
+
       <form class="card" id="form">
         <input type="hidden" id="f-id">
 
@@ -509,70 +640,133 @@ nav.bottom button[aria-current="page"] { color: var(--accent); font-weight: 700;
         <input type="date" id="f-date" required>
 
         <label for="f-person">誰（お名前・ニックネーム）</label>
-        <input type="text" id="f-person" list="personList" placeholder="例：佐藤さん" required>
+        <input
+          type="text"
+          id="f-person"
+          list="personList"
+          placeholder="例：佐藤さん"
+          required
+        >
         <datalist id="personList"></datalist>
 
         <label for="f-title">何（できごと）</label>
-        <input type="text" id="f-title" placeholder="例：仕事を手伝ってもらった" required>
+        <input
+          type="text"
+          id="f-title"
+          placeholder="例：仕事を手伝ってもらった"
+          required
+        >
 
         <label id="directionLabel">あげた／もらった</label>
         <div class="seg" role="group" aria-labelledby="directionLabel">
-          <button type="button" class="give" id="dirGive" aria-pressed="true">あげた</button>
-          <button type="button" class="take" id="dirTake" aria-pressed="false">もらった</button>
+          <button type="button" class="give" id="dirGive" aria-pressed="true">
+            あげた
+          </button>
+          <button type="button" class="take" id="dirTake" aria-pressed="false">
+            もらった
+          </button>
         </div>
 
         <label for="f-amount">金額（円・だいたいの換算でOK）</label>
-        <input type="number" id="f-amount" inputmode="numeric" min="0" step="1" placeholder="0">
+        <input
+          type="number"
+          id="f-amount"
+          inputmode="numeric"
+          min="0"
+          step="1"
+          placeholder="0"
+        >
 
         <label for="f-hours">かかった時間・一緒にいた時間</label>
-        <input type="number" id="f-hours" inputmode="decimal" min="0" step="0.5" placeholder="例：1.5">
+        <input
+          type="number"
+          id="f-hours"
+          inputmode="decimal"
+          min="0"
+          step="0.5"
+          placeholder="例：1.5"
+        >
 
         <label for="f-note">メモ（自由記入）</label>
-        <textarea id="f-note" placeholder="そのときの状況や、感謝の気持ちなど"></textarea>
+        <textarea
+          id="f-note"
+          placeholder="そのときの状況や、感謝の気持ちなど"
+        ></textarea>
 
-        <button type="submit" class="btn" style="margin-top:24px;">保存する</button>
-        <button type="button" class="btn danger" id="btnDelete" hidden>この記録を削除する</button>
+        <button type="submit" class="btn" style="margin-top:24px">
+          保存する
+        </button>
+
+        <button type="button" class="btn danger" id="btnDelete" hidden>
+          この記録を削除する
+        </button>
       </form>
     </section>
 
-    <section class="screen" id="s-history" aria-labelledby="historyTitle">
-      <h2 id="historyTitle">すべての履歴</h2>
+    <!-- 履歴 -->
+    <section class="screen" id="s-history">
+      <h2>すべての履歴</h2>
       <p class="muted">記録を押すと、内容を修正できます。</p>
       <div id="historyList"></div>
     </section>
 
-    <section class="screen" id="s-settings" aria-labelledby="settingsTitle">
-      <h2 id="settingsTitle">設定</h2>
+    <!-- 設定 -->
+    <section class="screen" id="s-settings">
+      <h2>設定</h2>
+
       <div class="card">
         <label for="s-wage">自分の時間給（円／時間）</label>
-        <p class="muted">金額を入力しなかった記録の時間換算に使用します。</p>
-        <input type="number" id="s-wage" inputmode="numeric" min="0" step="100">
-        <button type="button" class="btn" id="btnSaveSettings" style="margin-top:16px;">設定を保存</button>
+        <p class="muted">
+          金額を入力しなかった記録の時間換算に使用します。
+        </p>
+
+        <input
+          type="number"
+          id="s-wage"
+          inputmode="numeric"
+          min="0"
+          step="100"
+        >
+
+        <button
+          type="button"
+          class="btn"
+          id="btnSaveSettings"
+          style="margin-top:16px"
+        >
+          設定を保存
+        </button>
       </div>
+
       <div class="card">
         <h3>データ管理</h3>
-        <p class="muted">すべての記録を削除して、初回画面に戻します。削除したデータは元に戻せません。</p>
-        <button type="button" class="btn danger" id="btnReset">すべてのデータを消去</button>
+        <p class="muted">
+          すべての記録を削除して初回画面に戻します。
+          削除したデータは元に戻せません。
+        </p>
+
+        <button type="button" class="btn danger" id="btnReset">
+          すべてのデータを消去
+        </button>
       </div>
     </section>
-
   </main>
 
   <nav class="bottom" aria-label="メインメニュー">
     <button type="button" data-target="s-home" aria-current="page">
-      <span class="ic" aria-hidden="true">🏠</span><span>ホーム</span>
+      <span class="ic">🏠</span><span>ホーム</span>
     </button>
     <button type="button" data-target="s-people">
-      <span class="ic" aria-hidden="true">👥</span><span>人物</span>
+      <span class="ic">👥</span><span>人物</span>
     </button>
     <button type="button" data-target="s-add">
-      <span class="ic" aria-hidden="true">✍️</span><span>記録追加</span>
+      <span class="ic">✍️</span><span>記録追加</span>
     </button>
     <button type="button" data-target="s-history">
-      <span class="ic" aria-hidden="true">🕒</span><span>履歴</span>
+      <span class="ic">🕒</span><span>履歴</span>
     </button>
     <button type="button" data-target="s-settings">
-      <span class="ic" aria-hidden="true">⚙️</span><span>設定</span>
+      <span class="ic">⚙️</span><span>設定</span>
     </button>
   </nav>
 </div>
@@ -581,296 +775,679 @@ nav.bottom button[aria-current="page"] { color: var(--accent); font-weight: 700;
 
 <script>
 const STORAGE_KEY = "angelDb";
-const defaultDb = { logs: [], wage: 1500, init: false };
+
+const defaultDb = {
+  logs: [],
+  wage: 1500,
+  init: false,
+  sampleMode: false,
+  sampleNoticeShown: false
+};
+
 let db;
 
 try {
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-  db = saved && Array.isArray(saved.logs) ? { logs: saved.logs, wage: Number(saved.wage) || 1500, init: Boolean(saved.init) } : { ...defaultDb };
-} catch (error) { db = { ...defaultDb }; }
 
-let currentPeriod = "all"; let peopleSort = "take"; let previousScreen = "s-home";
+  db = saved && Array.isArray(saved.logs)
+    ? {
+        logs: saved.logs,
+        wage: Number(saved.wage) || 1500,
+        init: Boolean(saved.init),
+        sampleMode: Boolean(saved.sampleMode),
+        sampleNoticeShown: Boolean(saved.sampleNoticeShown)
+      }
+    : { ...defaultDb };
+} catch {
+  db = { ...defaultDb };
+}
 
-function saveDb() { localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); }
-function yen(value) { return new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY", maximumFractionDigits: 0 }).format(Number(value) || 0); }
-function showToast(message) {
+let currentPeriod = "all";
+let peopleSort = "take";
+let previousScreen = "s-home";
+
+function saveDb(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+}
+
+function yen(value){
+  return new Intl.NumberFormat("ja-JP", {
+    style:"currency",
+    currency:"JPY",
+    maximumFractionDigits:0
+  }).format(Number(value) || 0);
+}
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function showToast(message){
   const toast = document.getElementById("toast");
-  toast.textContent = message; toast.classList.add("show");
-  window.clearTimeout(showToast.timer);
-  showToast.timer = window.setTimeout(() => { toast.classList.remove("show"); }, 2200);
-}
-function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
-function localDateString(date = new Date()) {
-  const year = date.getFullYear(); const month = String(date.getMonth() + 1).padStart(2, "0"); const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-function dateFromString(value) { const parts = String(value).split("-").map(Number); return new Date(parts[0], parts[1] - 1, parts[2]); }
-
-function dateDaysAgo(days) { const date = new Date(); date.setHours(12, 0, 0, 0); date.setDate(date.getDate() - days); return localDateString(date); }
-function dateMonthsAgo(months, day = 10) {
-  const date = new Date(); date.setHours(12, 0, 0, 0); date.setDate(1); date.setMonth(date.getMonth() - months);
-  const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-  date.setDate(Math.min(day, lastDay)); return localDateString(date);
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
 }
 
-function effectiveAmount(log) {
-  const amount = Number(log.amount) || 0; const hours = Number(log.hours) || 0;
-  if (amount === 0 && hours > 0) { return hours * (Number(db.wage) || 0); } return amount;
+function localDateString(date = new Date()){
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2,"0");
+  const d = String(date.getDate()).padStart(2,"0");
+  return `${y}-${m}-${d}`;
 }
 
-function createSampleLogs() {
+function dateFromString(value){
+  const [y,m,d] = String(value).split("-").map(Number);
+  return new Date(y,m - 1,d);
+}
+
+function dateDaysAgo(days){
+  const date = new Date();
+  date.setHours(12,0,0,0);
+  date.setDate(date.getDate() - days);
+  return localDateString(date);
+}
+
+function dateMonthsAgo(months,day = 10){
+  const date = new Date();
+  date.setHours(12,0,0,0);
+  date.setDate(1);
+  date.setMonth(date.getMonth() - months);
+
+  const last = new Date(
+    date.getFullYear(),
+    date.getMonth() + 1,
+    0
+  ).getDate();
+
+  date.setDate(Math.min(day,last));
+  return localDateString(date);
+}
+
+function effectiveAmount(log){
+  const amount = Number(log.amount) || 0;
+  const hours = Number(log.hours) || 0;
+
+  return amount === 0 && hours > 0
+    ? hours * (Number(db.wage) || 0)
+    : amount;
+}
+
+function createSampleLogs(){
   return [
-    { id: 1001, date: dateDaysAgo(0), person: "佐藤さん", title: "仕事の資料を作ってもらった", dir: "take", amount: 5000, hours: 2, note: "急なお願いにもかかわらず手伝ってくれた。" },
-    { id: 1002, date: dateDaysAgo(0), person: "田中さん", title: "ランチをごちそうした", dir: "give", amount: 1800, hours: 1, note: "いつものお礼として。" },
-    { id: 1003, date: dateDaysAgo(1), person: "高橋さん", title: "相談に乗ってもらった", dir: "take", amount: 0, hours: 2, note: "親身になって話を聞いてくれた。" },
-    { id: 1004, date: dateDaysAgo(2), person: "佐藤さん", title: "お礼のプレゼントを渡した", dir: "give", amount: 2000, hours: 0.5, note: "資料作成のお礼。" },
-    { id: 1005, date: dateDaysAgo(3), person: "鈴木さん", title: "車で送ってもらった", dir: "take", amount: 3000, hours: 1.5, note: "雨の日に助けてもらった。" },
-    { id: 1006, date: dateDaysAgo(5), person: "田中さん", title: "パソコンの設定を手伝った", dir: "give", amount: 0, hours: 3, note: "初期設定とデータ移行を手伝った。" },
-    { id: 1007, date: dateDaysAgo(8), person: "高橋さん", title: "誕生日プレゼントをあげた", dir: "give", amount: 4500, hours: 1, note: "以前から欲しがっていたもの。" },
-    { id: 1008, date: dateDaysAgo(12), person: "鈴木さん", title: "仕事を紹介してもらった", dir: "take", amount: 12000, hours: 0.5, note: "新しい仕事につながった。" },
-    { id: 1009, date: dateDaysAgo(16), person: "佐藤さん", title: "引っ越しを手伝った", dir: "give", amount: 0, hours: 5, note: "荷造りと運搬を手伝った。" },
-    { id: 1010, date: dateDaysAgo(22), person: "田中さん", title: "仕事を発注してもらった", dir: "take", amount: 18000, hours: 1, note: "継続の仕事を依頼してくれた。" },
-    { id: 1011, date: dateMonthsAgo(1, 18), person: "高橋さん", title: "イベント運営を手伝った", dir: "give", amount: 0, hours: 6, note: "受付と片付けを担当した。" },
-    { id: 1012, date: dateMonthsAgo(1, 8), person: "佐藤さん", title: "体調不良のとき差し入れをもらった", dir: "take", amount: 2500, hours: 1, note: "食べ物と薬を届けてくれた。" },
-    { id: 1013, date: dateMonthsAgo(2, 14), person: "鈴木さん", title: "お祝いの食事をごちそうした", dir: "give", amount: 8000, hours: 3, note: "昇進のお祝い。" },
-    { id: 1014, date: dateMonthsAgo(3, 5), person: "田中さん", title: "企画の相談に乗ってもらった", dir: "take", amount: 0, hours: 4, note: "たくさんのアイデアをもらった。" },
-    { id: 1015, date: dateMonthsAgo(4, 20), person: "高橋さん", title: "旅行のお土産をもらった", dir: "take", amount: 2000, hours: 0, note: "自分の好みを覚えていてくれた。" },
-    { id: 1016, date: dateMonthsAgo(14, 10), person: "佐藤さん", title: "以前、食事をごちそうになった", dir: "take", amount: 4000, hours: 2, note: "開始以来の集計だけに入る古い記録。" }
+    {id:1001,date:dateDaysAgo(0),person:"佐藤さん",title:"仕事の資料を作ってもらった",dir:"take",amount:5000,hours:2,note:"急なお願いにもかかわらず手伝ってくれた。"},
+    {id:1002,date:dateDaysAgo(0),person:"田中さん",title:"ランチをごちそうした",dir:"give",amount:1800,hours:1,note:"いつものお礼として。"},
+    {id:1003,date:dateDaysAgo(1),person:"高橋さん",title:"相談に乗ってもらった",dir:"take",amount:0,hours:2,note:"親身になって話を聞いてくれた。"},
+    {id:1004,date:dateDaysAgo(2),person:"佐藤さん",title:"お礼のプレゼントを渡した",dir:"give",amount:2000,hours:.5,note:"資料作成のお礼。"},
+    {id:1005,date:dateDaysAgo(3),person:"鈴木さん",title:"車で送ってもらった",dir:"take",amount:3000,hours:1.5,note:"雨の日に助けてもらった。"},
+    {id:1006,date:dateDaysAgo(5),person:"田中さん",title:"パソコンの設定を手伝った",dir:"give",amount:0,hours:3,note:"初期設定とデータ移行を手伝った。"},
+    {id:1007,date:dateDaysAgo(8),person:"高橋さん",title:"誕生日プレゼントをあげた",dir:"give",amount:4500,hours:1,note:"以前から欲しがっていたもの。"},
+    {id:1008,date:dateDaysAgo(12),person:"鈴木さん",title:"仕事を紹介してもらった",dir:"take",amount:12000,hours:.5,note:"新しい仕事につながった。"},
+    {id:1009,date:dateDaysAgo(16),person:"佐藤さん",title:"引っ越しを手伝った",dir:"give",amount:0,hours:5,note:"荷造りと運搬を手伝った。"},
+    {id:1010,date:dateDaysAgo(22),person:"田中さん",title:"仕事を発注してもらった",dir:"take",amount:18000,hours:1,note:"継続の仕事を依頼してくれた。"},
+    {id:1011,date:dateMonthsAgo(1,18),person:"高橋さん",title:"イベント運営を手伝った",dir:"give",amount:0,hours:6,note:"受付と片付けを担当した。"},
+    {id:1012,date:dateMonthsAgo(1,8),person:"佐藤さん",title:"体調不良のとき差し入れをもらった",dir:"take",amount:2500,hours:1,note:"食べ物と薬を届けてくれた。"},
+    {id:1013,date:dateMonthsAgo(2,14),person:"鈴木さん",title:"お祝いの食事をごちそうした",dir:"give",amount:8000,hours:3,note:"昇進のお祝い。"},
+    {id:1014,date:dateMonthsAgo(3,5),person:"田中さん",title:"企画の相談に乗ってもらった",dir:"take",amount:0,hours:4,note:"たくさんのアイデアをもらった。"},
+    {id:1015,date:dateMonthsAgo(4,20),person:"高橋さん",title:"旅行のお土産をもらった",dir:"take",amount:2000,hours:0,note:"好みを覚えていてくれた。"},
+    {id:1016,date:dateMonthsAgo(14,10),person:"佐藤さん",title:"以前、食事をごちそうになった",dir:"take",amount:4000,hours:2,note:"開始以来にだけ入る古い記録。"}
   ];
 }
 
 const screens = document.querySelectorAll(".screen");
 const navButtons = document.querySelectorAll("nav.bottom button");
 
-function navTo(screenId) {
+function navTo(id){
   const current = document.querySelector(".screen.active");
-  if (current && current.id !== "s-help" && current.id !== "s-detail") { previousScreen = current.id; }
-  screens.forEach((screen) => { screen.classList.remove("active"); });
-  const destination = document.getElementById(screenId);
-  if (!destination) { return; } destination.classList.add("active");
-  navButtons.forEach((button) => {
-    if (button.dataset.target === screenId) { button.setAttribute("aria-current", "page"); } else { button.removeAttribute("aria-current"); }
+
+  if(current && current.id !== "s-help" && current.id !== "s-detail"){
+    previousScreen = current.id;
+  }
+
+  screens.forEach(s => s.classList.remove("active"));
+  document.getElementById(id)?.classList.add("active");
+
+  navButtons.forEach(button => {
+    if(button.dataset.target === id){
+      button.setAttribute("aria-current","page");
+    }else{
+      button.removeAttribute("aria-current");
+    }
   });
-  window.scrollTo(0, 0); renderAll();
+
+  window.scrollTo(0,0);
+  renderAll();
 }
 
-navButtons.forEach((button) => {
-  button.addEventListener("click", () => { const target = button.dataset.target; if (target === "s-add") { resetForm(); } navTo(target); });
+navButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    const target = button.dataset.target;
+
+    if(target === "s-add"){
+      resetForm();
+    }
+
+    navTo(target);
+
+    if(target === "s-add"){
+      showSampleInputNotice();
+    }
+  });
 });
 
-document.getElementById("btnHelp").addEventListener("click", () => { navTo("s-help"); });
-document.getElementById("backFromHelp").addEventListener("click", () => { navTo(previousScreen || "s-home"); });
-document.getElementById("backPeople").addEventListener("click", () => { navTo("s-people"); });
+function showSampleInputNotice(){
+  const notice = document.getElementById("sampleInputAlert");
 
-function startApp() { document.getElementById("welcome").classList.remove("show"); document.getElementById("app").hidden = false; navTo("s-home"); }
+  if(db.sampleMode && !db.sampleNoticeShown){
+    notice.hidden = false;
+    db.sampleNoticeShown = true;
+    saveDb();
+  }else{
+    notice.hidden = true;
+  }
+}
 
-if (db.init) { startApp(); } else { document.getElementById("welcome").classList.add("show"); }
+document.getElementById("btnHelp").onclick = () => navTo("s-help");
+document.getElementById("backFromHelp").onclick = () => navTo(previousScreen);
+document.getElementById("backPeople").onclick = () => navTo("s-people");
+document.getElementById("btnGoToSettings").onclick = () => navTo("s-settings");
 
-document.getElementById("btnSample").addEventListener("click", () => { db = { logs: createSampleLogs(), wage: 1500, init: true }; saveDb(); startApp(); });
-document.getElementById("btnEmpty").addEventListener("click", () => { db = { logs: [], wage: 1500, init: true }; saveDb(); startApp(); });
+function startApp(){
+  document.getElementById("welcome").classList.remove("show");
+  document.getElementById("app").hidden = false;
+  navTo("s-home");
+}
 
-function isSameDate(first, second) { return (first.getFullYear() === second.getFullYear() && first.getMonth() === second.getMonth() && first.getDate() === second.getDate()); }
+if(db.init){
+  startApp();
+}else{
+  document.getElementById("welcome").classList.add("show");
+}
 
-function getFilteredLogs() {
-  const today = new Date(); today.setHours(12, 0, 0, 0);
-  return db.logs.filter((log) => {
-    if (currentPeriod === "all") { return true; }
-    const logDate = dateFromString(log.date); logDate.setHours(12, 0, 0, 0);
-    if (currentPeriod === "today") { return isSameDate(logDate, today); }
-    if (currentPeriod === "month") { return (logDate.getFullYear() === today.getFullYear() && logDate.getMonth() === today.getMonth()); }
-    if (currentPeriod === "year") { return logDate.getFullYear() === today.getFullYear(); }
-    if (currentPeriod === "week") {
-      const start = new Date(today); const mondayOffset = (today.getDay() + 6) % 7; start.setDate(today.getDate() - mondayOffset);
-      const end = new Date(start); end.setDate(start.getDate() + 6); return logDate >= start && logDate <= end;
+document.getElementById("btnSample").onclick = () => {
+  db = {
+    logs:createSampleLogs(),
+    wage:1500,
+    init:true,
+    sampleMode:true,
+    sampleNoticeShown:false
+  };
+  saveDb();
+  startApp();
+};
+
+document.getElementById("btnEmpty").onclick = () => {
+  db = {
+    logs:[],
+    wage:1500,
+    init:true,
+    sampleMode:false,
+    sampleNoticeShown:false
+  };
+  saveDb();
+  startApp();
+};
+
+function getFilteredLogs(){
+  const today = new Date();
+  today.setHours(12,0,0,0);
+
+  return db.logs.filter(log => {
+    if(currentPeriod === "all") return true;
+
+    const d = dateFromString(log.date);
+    d.setHours(12,0,0,0);
+
+    if(currentPeriod === "today"){
+      return d.toDateString() === today.toDateString();
     }
+
+    if(currentPeriod === "month"){
+      return d.getFullYear() === today.getFullYear() &&
+             d.getMonth() === today.getMonth();
+    }
+
+    if(currentPeriod === "year"){
+      return d.getFullYear() === today.getFullYear();
+    }
+
+    if(currentPeriod === "week"){
+      const start = new Date(today);
+      const offset = (today.getDay() + 6) % 7;
+      start.setDate(today.getDate() - offset);
+
+      const end = new Date(start);
+      end.setDate(start.getDate() + 6);
+
+      return d >= start && d <= end;
+    }
+
     return true;
   });
 }
 
-function renderHome() {
+function renderHome(){
   const logs = getFilteredLogs();
-  let giveTotal = 0; let takeTotal = 0; const personStats = {};
-  logs.forEach((log) => {
-    const amount = effectiveAmount(log); const hours = Number(log.hours) || 0; const person = log.person || "名前未設定";
-    if (log.dir === "give") { giveTotal += amount; } else { takeTotal += amount; }
-    if (!personStats[person]) { personStats[person] = { take: 0, time: 0 }; }
-    if (log.dir === "take") { personStats[person].take += amount; } personStats[person].time += hours;
+  let give = 0;
+  let take = 0;
+  const stats = {};
+
+  logs.forEach(log => {
+    const amount = effectiveAmount(log);
+    const name = log.person || "名前未設定";
+
+    if(log.dir === "give") give += amount;
+    else take += amount;
+
+    if(!stats[name]) stats[name] = {take:0,time:0};
+
+    if(log.dir === "take") stats[name].take += amount;
+    stats[name].time += Number(log.hours) || 0;
   });
 
-  document.getElementById("sumGive").textContent = yen(giveTotal); document.getElementById("sumTake").textContent = yen(takeTotal);
-  const total = giveTotal + takeTotal;
-  const givePercent = total === 0 ? 50 : Math.round((giveTotal / total) * 100);
-  const takePercent = total === 0 ? 50 : 100 - givePercent;
+  document.getElementById("sumGive").textContent = yen(give);
+  document.getElementById("sumTake").textContent = yen(take);
 
-  document.getElementById("barG").style.width = `${givePercent}%`; document.getElementById("barT").style.width = `${takePercent}%`;
-  document.getElementById("homeBar").setAttribute("aria-label", total === 0 ? "この期間の記録はありません" : `あげた${givePercent}パーセント、もらった${takePercent}パーセント`);
+  const total = give + take;
+  const gp = total === 0 ? 50 : Math.round(give / total * 100);
 
-  let message = "この期間には、まだ記録がありません。日常の小さなやり取りを記録してみましょう。";
-  if (total > 0) { message = "数字は相手を評価するためではなく、見過ごしていた支えや、自分が届けた優しさを振り返るための目安です。"; }
-  document.getElementById("homeText").textContent = message;
+  document.getElementById("barG").style.width = `${gp}%`;
+  document.getElementById("barT").style.width = `${100 - gp}%`;
 
-  const people = Object.entries(personStats).map(([name, stats]) => ({ name, ...stats }));
-  const angelRanking = [...people].filter((person) => person.take > 0).sort((a, b) => b.take - a.take).slice(0, 5);
-  document.getElementById("rankAngel").innerHTML = angelRanking.length === 0 ? '<div class="empty">この期間のデータはありません</div>' : angelRanking.map((person, index) => `
-    <div class="row"><div class="rank-heading"><span class="rank-no">${index + 1}</span><span class="name">${escapeHtml(person.name)}</span></div><span class="tag t">もらった：${yen(person.take)}</span></div>`).join("");
+  document.getElementById("homeText").textContent =
+    total === 0
+      ? "この期間には、まだ記録がありません。"
+      : "数字は相手を評価するためではなく、見過ごしていた支えや、自分が届けた優しさを振り返るための目安です。";
 
-  const timeRanking = [...people].filter((person) => person.time > 0).sort((a, b) => b.time - a.time).slice(0, 5);
-  document.getElementById("rankTime").innerHTML = timeRanking.length === 0 ? '<div class="empty">この期間のデータはありません</div>' : timeRanking.map((person, index) => `
-    <div class="row"><div class="rank-heading"><span class="rank-no">${index + 1}</span><span class="name">${escapeHtml(person.name)}</span></div><span class="tag">🕒 ${person.time}時間</span></div>`).join("");
+  const people = Object.entries(stats).map(([name,value]) => ({
+    name,...value
+  }));
+
+  const angels = [...people]
+    .filter(p => p.take > 0)
+    .sort((a,b) => b.take - a.take)
+    .slice(0,5);
+
+  document.getElementById("rankAngel").innerHTML =
+    angels.length
+      ? angels.map((p,i) => `
+        <div class="row">
+          <div class="rank-heading">
+            <span class="rank-no">${i + 1}</span>
+            <span class="name">${escapeHtml(p.name)}</span>
+          </div>
+          <span class="tag t">もらった：${yen(p.take)}</span>
+        </div>
+      `).join("")
+      : '<div class="empty">この期間のデータはありません</div>';
+
+  const times = [...people]
+    .filter(p => p.time > 0)
+    .sort((a,b) => b.time - a.time)
+    .slice(0,5);
+
+  document.getElementById("rankTime").innerHTML =
+    times.length
+      ? times.map((p,i) => `
+        <div class="row">
+          <div class="rank-heading">
+            <span class="rank-no">${i + 1}</span>
+            <span class="name">${escapeHtml(p.name)}</span>
+          </div>
+          <span class="tag">🕒 ${p.time}時間</span>
+        </div>
+      `).join("")
+      : '<div class="empty">この期間のデータはありません</div>';
 }
 
-document.querySelectorAll("#homeTabs button").forEach((button) => {
-  button.addEventListener("click", () => {
+document.querySelectorAll("#homeTabs button").forEach(button => {
+  button.onclick = () => {
     currentPeriod = button.dataset.period;
-    document.querySelectorAll("#homeTabs button").forEach((tab) => { tab.setAttribute("aria-selected", tab === button ? "true" : "false"); });
+
+    document.querySelectorAll("#homeTabs button").forEach(tab => {
+      tab.setAttribute(
+        "aria-selected",
+        tab === button ? "true" : "false"
+      );
+    });
+
     renderHome();
-  });
+  };
 });
 
-function collectPeople() {
-  const people = {};
-  db.logs.forEach((log) => {
-    const name = log.person || "名前未設定"; const amount = effectiveAmount(log);
-    if (!people[name]) { people[name] = { name, give: 0, take: 0, time: 0 }; }
-    if (log.dir === "give") { people[name].give += amount; } else { people[name].take += amount; }
-    people[name].time += Number(log.hours) || 0;
+function collectPeople(){
+  const map = {};
+
+  db.logs.forEach(log => {
+    const name = log.person || "名前未設定";
+    if(!map[name]) map[name] = {name,give:0,take:0,time:0};
+
+    const amount = effectiveAmount(log);
+
+    if(log.dir === "give") map[name].give += amount;
+    else map[name].take += amount;
+
+    map[name].time += Number(log.hours) || 0;
   });
-  return Object.values(people);
+
+  return Object.values(map);
 }
 
-function renderPeople() {
+function renderPeople(){
   const people = collectPeople();
-  if (peopleSort === "time") { people.sort((a, b) => b.time - a.time || b.take - a.take || a.name.localeCompare(b.name, "ja")); }
-  else { people.sort((a, b) => b.take - a.take || b.time - a.time || a.name.localeCompare(b.name, "ja")); }
 
-  document.getElementById("peopleSortDescription").textContent = peopleSort === "time" ? "一緒にいた時間や作業に費やした時間の合計が多い順に表示しています。" : "あなたにたくさん与えてくれた順に表示しています。";
-  const list = document.getElementById("peopleList"); list.innerHTML = "";
-  if (people.length === 0) { list.innerHTML = '<div class="empty">まだ記録がありません</div>'; return; }
+  people.sort((a,b) =>
+    peopleSort === "time"
+      ? b.time - a.time || b.take - a.take
+      : b.take - a.take || b.time - a.time
+  );
 
-  people.forEach((person, index) => {
-    const total = person.give + person.take;
-    const givePercent = total === 0 ? 50 : Math.round((person.give / total) * 100);
-    const takePercent = total === 0 ? 50 : 100 - givePercent;
-    const button = document.createElement("button"); button.type = "button"; button.className = "row";
+  document.getElementById("peopleSortDescription").textContent =
+    peopleSort === "time"
+      ? "一緒にいた時間や作業時間の合計が多い順に表示しています。"
+      : "あなたにたくさん与えてくれた順に表示しています。";
+
+  const list = document.getElementById("peopleList");
+  list.innerHTML = "";
+
+  if(!people.length){
+    list.innerHTML = '<div class="empty">まだ記録がありません</div>';
+    return;
+  }
+
+  people.forEach((p,i) => {
+    const total = p.give + p.take;
+    const gp = total === 0 ? 50 : Math.round(p.give / total * 100);
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "row";
+
     button.innerHTML = `
-      <div class="rank-heading"><span class="rank-no">${index + 1}</span><span class="name">${escapeHtml(person.name)}</span></div>
-      <div class="meta"><span class="dot g"></span>あげた：${yen(person.give)}　<span class="dot t"></span>もらった：${yen(person.take)}</div>
-      <div class="bar small" role="img" aria-label="${escapeHtml(person.name)}さんとの割合。あげた${givePercent}パーセント、もらった${takePercent}パーセント">
-        <div class="g" style="width:${givePercent}%"></div><div class="t" style="width:${takePercent}%"></div>
+      <div class="rank-heading">
+        <span class="rank-no">${i + 1}</span>
+        <span class="name">${escapeHtml(p.name)}</span>
       </div>
-      <div class="meta">🕒 共にした時間：${person.time}時間</div>`;
-    button.addEventListener("click", () => { openPerson(person.name); });
+      <div class="meta">
+        <span class="dot g"></span>あげた：${yen(p.give)}　
+        <span class="dot t"></span>もらった：${yen(p.take)}
+      </div>
+      <div class="bar small">
+        <div class="g" style="width:${gp}%"></div>
+        <div class="t" style="width:${100 - gp}%"></div>
+      </div>
+      <div class="meta">🕒 共にした時間：${p.time}時間</div>
+    `;
+
+    button.onclick = () => openPerson(p.name);
     list.appendChild(button);
   });
 }
 
-document.querySelectorAll("#peopleSortTabs button").forEach((button) => {
-  button.addEventListener("click", () => {
+document.querySelectorAll("#peopleSortTabs button").forEach(button => {
+  button.onclick = () => {
     peopleSort = button.dataset.sort;
-    document.querySelectorAll("#peopleSortTabs button").forEach((tab) => { tab.setAttribute("aria-selected", tab === button ? "true" : "false"); });
+
+    document.querySelectorAll("#peopleSortTabs button").forEach(tab => {
+      tab.setAttribute(
+        "aria-selected",
+        tab === button ? "true" : "false"
+      );
+    });
+
     renderPeople();
-  });
+  };
 });
 
-function createLogButton(log) {
-  const button = document.createElement("button"); button.type = "button"; button.className = "row";
-  const directionLabel = log.dir === "give" ? "あげた" : "もらった"; const tagClass = log.dir === "give" ? "g" : "t";
-  const displayedAmount = effectiveAmount(log); const converted = (Number(log.amount) || 0) === 0 && (Number(log.hours) || 0) > 0;
+function createLogButton(log){
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "row";
+
+  const amount = effectiveAmount(log);
+  const converted =
+    Number(log.amount || 0) === 0 &&
+    Number(log.hours || 0) > 0;
+
+  const direction = log.dir === "give" ? "あげた" : "もらった";
+  const tagClass = log.dir === "give" ? "g" : "t";
+
   button.innerHTML = `
-    <div class="meta">${escapeHtml(log.date)} ・ ${escapeHtml(log.person)}</div>
+    <div class="meta">
+      ${escapeHtml(log.date)} ・ ${escapeHtml(log.person)}
+    </div>
     <div class="name">${escapeHtml(log.title)}</div>
-    <div><span class="tag ${tagClass}">${directionLabel}：${yen(displayedAmount)}${converted ? "（時間換算）" : ""}</span>${Number(log.hours) > 0 ? `<span class="tag">🕒 ${Number(log.hours)}時間</span>` : ""}</div>
-    ${log.note ? `<div class="meta" style="margin-top:8px;">${escapeHtml(log.note)}</div>` : ""}`;
-  button.addEventListener("click", () => { editLog(log.id); }); return button;
+    <div>
+      <span class="tag ${tagClass}">
+        ${direction}：${yen(amount)}${converted ? "（時間換算）" : ""}
+      </span>
+      ${Number(log.hours) > 0
+        ? `<span class="tag">🕒 ${Number(log.hours)}時間</span>`
+        : ""}
+    </div>
+    ${log.note
+      ? `<div class="meta" style="margin-top:8px">${escapeHtml(log.note)}</div>`
+      : ""}
+  `;
+
+  button.onclick = () => editLog(log.id);
+  return button;
 }
 
-function openPerson(name) {
-  const logs = db.logs.filter((log) => log.person === name).sort((a, b) => dateFromString(b.date) - dateFromString(a.date) || b.id - a.id);
-  let give = 0; let take = 0; let time = 0;
-  logs.forEach((log) => { const amount = effectiveAmount(log); if (log.dir === "give") { give += amount; } else { take += amount; } time += Number(log.hours) || 0; });
+function openPerson(name){
+  const logs = db.logs
+    .filter(log => log.person === name)
+    .sort((a,b) => dateFromString(b.date) - dateFromString(a.date));
 
-  const total = give + take; const givePercent = total === 0 ? 50 : Math.round((give / total) * 100); const takePercent = total === 0 ? 50 : 100 - givePercent;
+  let give = 0;
+  let take = 0;
+  let time = 0;
+
+  logs.forEach(log => {
+    const amount = effectiveAmount(log);
+    if(log.dir === "give") give += amount;
+    else take += amount;
+    time += Number(log.hours) || 0;
+  });
+
+  const total = give + take;
+  const gp = total === 0 ? 50 : Math.round(give / total * 100);
+
   document.getElementById("detailTitle").textContent = `${name}との記録`;
+
   document.getElementById("detailBody").innerHTML = `
-    <div class="grid2"><div class="stat"><div class="stat-label">あなたがあげた</div><div class="big">${yen(give)}</div></div><div class="stat"><div class="stat-label">あなたがもらった</div><div class="big">${yen(take)}</div></div></div>
-    <div class="bar" role="img" aria-label="あげた${givePercent}パーセント、もらった${takePercent}パーセント"><div class="g" style="width:${givePercent}%"></div><div class="t" style="width:${takePercent}%"></div></div>
-    <div class="legend"><span><span class="dot g"></span>あげた</span><span><span class="dot t"></span>もらった</span></div>
-    <p class="muted center" style="margin-top:12px;">🕒 共にした時間・作業時間の合計：${time}時間</p>`;
+    <div class="grid2">
+      <div class="stat">
+        <div class="stat-label">あなたがあげた</div>
+        <div class="big">${yen(give)}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">あなたがもらった</div>
+        <div class="big">${yen(take)}</div>
+      </div>
+    </div>
+    <div class="bar">
+      <div class="g" style="width:${gp}%"></div>
+      <div class="t" style="width:${100 - gp}%"></div>
+    </div>
+    <div class="legend">
+      <span><span class="dot g"></span>あげた</span>
+      <span><span class="dot t"></span>もらった</span>
+    </div>
+    <p class="muted center" style="margin-top:12px">
+      🕒 共にした時間・作業時間の合計：${time}時間
+    </p>
+  `;
 
-  const detailLogs = document.getElementById("detailLogs"); detailLogs.innerHTML = "";
-  logs.forEach((log) => { detailLogs.appendChild(createLogButton(log)); }); navTo("s-detail");
+  const area = document.getElementById("detailLogs");
+  area.innerHTML = "";
+  logs.forEach(log => area.appendChild(createLogButton(log)));
+
+  navTo("s-detail");
 }
 
-function renderHistory() {
-  const logs = [...db.logs].sort((a, b) => dateFromString(b.date) - dateFromString(a.date) || b.id - a.id);
-  const list = document.getElementById("historyList"); list.innerHTML = "";
-  if (logs.length === 0) { list.innerHTML = '<div class="empty">まだ記録がありません</div>'; return; }
-  logs.forEach((log) => { list.appendChild(createLogButton(log)); });
+function renderHistory(){
+  const logs = [...db.logs].sort(
+    (a,b) => dateFromString(b.date) - dateFromString(a.date)
+  );
+
+  const list = document.getElementById("historyList");
+  list.innerHTML = "";
+
+  if(!logs.length){
+    list.innerHTML = '<div class="empty">まだ記録がありません</div>';
+    return;
+  }
+
+  logs.forEach(log => list.appendChild(createLogButton(log)));
 }
 
-const dirGive = document.getElementById("dirGive"); const dirTake = document.getElementById("dirTake");
-dirGive.addEventListener("click", () => { dirGive.setAttribute("aria-pressed", "true"); dirTake.setAttribute("aria-pressed", "false"); });
-dirTake.addEventListener("click", () => { dirTake.setAttribute("aria-pressed", "true"); dirGive.setAttribute("aria-pressed", "false"); });
+const dirGive = document.getElementById("dirGive");
+const dirTake = document.getElementById("dirTake");
 
-function updatePersonOptions() {
-  const names = [...new Set(db.logs.map((log) => String(log.person || "").trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, "ja"));
-  document.getElementById("personList").innerHTML = names.map((name) => `<option value="${escapeHtml(name)}"></option>`).join("");
+dirGive.onclick = () => {
+  dirGive.setAttribute("aria-pressed","true");
+  dirTake.setAttribute("aria-pressed","false");
+};
+
+dirTake.onclick = () => {
+  dirTake.setAttribute("aria-pressed","true");
+  dirGive.setAttribute("aria-pressed","false");
+};
+
+function updatePersonOptions(){
+  const names = [...new Set(
+    db.logs.map(log => String(log.person || "").trim()).filter(Boolean)
+  )].sort((a,b) => a.localeCompare(b,"ja"));
+
+  document.getElementById("personList").innerHTML =
+    names.map(name =>
+      `<option value="${escapeHtml(name)}"></option>`
+    ).join("");
 }
 
-function resetForm() {
-  document.getElementById("form").reset(); document.getElementById("f-id").value = ""; document.getElementById("f-date").value = localDateString();
-  dirGive.setAttribute("aria-pressed", "true"); dirTake.setAttribute("aria-pressed", "false");
-  document.getElementById("btnDelete").hidden = true; document.getElementById("addTitle").textContent = "記録を追加"; updatePersonOptions();
+function resetForm(){
+  document.getElementById("form").reset();
+  document.getElementById("f-id").value = "";
+  document.getElementById("f-date").value = localDateString();
+  document.getElementById("btnDelete").hidden = true;
+  document.getElementById("addTitle").textContent = "記録を追加";
+
+  dirGive.setAttribute("aria-pressed","true");
+  dirTake.setAttribute("aria-pressed","false");
+
+  updatePersonOptions();
 }
 
-function editLog(id) {
-  const log = db.logs.find((item) => Number(item.id) === Number(id)); if (!log) { return; }
-  document.getElementById("f-id").value = log.id; document.getElementById("f-date").value = log.date;
-  document.getElementById("f-person").value = log.person; document.getElementById("f-title").value = log.title;
-  document.getElementById("f-amount").value = Number(log.amount) || ""; document.getElementById("f-hours").value = Number(log.hours) || ""; document.getElementById("f-note").value = log.note || "";
-  if (log.dir === "take") { dirTake.click(); } else { dirGive.click(); }
-  document.getElementById("btnDelete").hidden = false; document.getElementById("addTitle").textContent = "記録を編集";
-  updatePersonOptions(); navTo("s-add");
+function editLog(id){
+  const log = db.logs.find(item => Number(item.id) === Number(id));
+  if(!log) return;
+
+  document.getElementById("sampleInputAlert").hidden = true;
+  document.getElementById("f-id").value = log.id;
+  document.getElementById("f-date").value = log.date;
+  document.getElementById("f-person").value = log.person;
+  document.getElementById("f-title").value = log.title;
+  document.getElementById("f-amount").value = Number(log.amount) || "";
+  document.getElementById("f-hours").value = Number(log.hours) || "";
+  document.getElementById("f-note").value = log.note || "";
+
+  log.dir === "take" ? dirTake.click() : dirGive.click();
+
+  document.getElementById("btnDelete").hidden = false;
+  document.getElementById("addTitle").textContent = "記録を編集";
+
+  navTo("s-add");
 }
 
-document.getElementById("form").addEventListener("submit", (event) => {
+document.getElementById("form").onsubmit = event => {
   event.preventDefault();
-  const idValue = document.getElementById("f-id").value; const date = document.getElementById("f-date").value;
-  const person = document.getElementById("f-person").value.trim(); const title = document.getElementById("f-title").value.trim();
-  if (!date || !person || !title) { showToast("日付・誰・何を入力してください"); return; }
+
+  const id = document.getElementById("f-id").value;
+  const date = document.getElementById("f-date").value;
+  const person = document.getElementById("f-person").value.trim();
+  const title = document.getElementById("f-title").value.trim();
+
+  if(!date || !person || !title){
+    showToast("日付・誰・何を入力してください");
+    return;
+  }
 
   const log = {
-    id: idValue ? Number(idValue) : Date.now(), date, person, title,
-    dir: dirGive.getAttribute("aria-pressed") === "true" ? "give" : "take",
-    amount: Number(document.getElementById("f-amount").value) || 0, hours: Number(document.getElementById("f-hours").value) || 0,
-    note: document.getElementById("f-note").value.trim()
+    id:id ? Number(id) : Date.now(),
+    date,
+    person,
+    title,
+    dir:dirGive.getAttribute("aria-pressed") === "true"
+      ? "give"
+      : "take",
+    amount:Number(document.getElementById("f-amount").value) || 0,
+    hours:Number(document.getElementById("f-hours").value) || 0,
+    note:document.getElementById("f-note").value.trim()
   };
 
-  if (idValue) { const index = db.logs.findIndex((item) => Number(item.id) === Number(idValue)); if (index >= 0) { db.logs[index] = log; } } else { db.logs.push(log); }
-  saveDb(); resetForm(); showToast("記録を保存しました"); navTo("s-history");
-});
+  if(id){
+    const index = db.logs.findIndex(item => Number(item.id) === Number(id));
+    if(index >= 0) db.logs[index] = log;
+  }else{
+    db.logs.push(log);
+  }
 
-document.getElementById("btnDelete").addEventListener("click", () => {
-  const id = Number(document.getElementById("f-id").value); if (!id) { return; }
-  if (!window.confirm("この記録を削除しますか？\n削除した記録は元に戻せません。")) { return; }
-  db.logs = db.logs.filter((log) => Number(log.id) !== id);
-  saveDb(); resetForm(); showToast("記録を削除しました"); navTo("s-history");
-});
+  saveDb();
+  resetForm();
+  showToast("記録を保存しました");
+  navTo("s-history");
+};
 
-document.getElementById("s-wage").value = db.wage;
-document.getElementById("btnSaveSettings").addEventListener("click", () => {
-  const wage = Number(document.getElementById("s-wage").value); db.wage = wage >= 0 ? wage : 0;
-  saveDb(); renderAll(); showToast("設定を保存しました");
-});
+document.getElementById("btnDelete").onclick = () => {
+  const id = Number(document.getElementById("f-id").value);
+  if(!id) return;
 
-document.getElementById("btnReset").addEventListener("click", () => {
-  if (!window.confirm("すべての記録を削除しますか？\n削除したデータは元に戻せません。")) { return; }
-  localStorage.removeItem(STORAGE_KEY); window.location.reload();
-});
+  if(!confirm("この記録を削除しますか？\n削除した記録は元に戻せません。")){
+    return;
+  }
 
-function renderAll() { document.getElementById("s-wage").value = db.wage; updatePersonOptions(); renderHome(); renderPeople(); renderHistory(); }
+  db.logs = db.logs.filter(log => Number(log.id) !== id);
+  saveDb();
+  resetForm();
+  showToast("記録を削除しました");
+  navTo("s-history");
+};
+
+document.getElementById("btnSaveSettings").onclick = () => {
+  const wage = Number(document.getElementById("s-wage").value);
+  db.wage = wage >= 0 ? wage : 0;
+  saveDb();
+  renderAll();
+  showToast("設定を保存しました");
+};
+
+document.getElementById("btnReset").onclick = () => {
+  const message = db.sampleMode
+    ? "サンプルデータをすべて削除しますか？\n削除後は初回画面に戻ります。"
+    : "すべての記録を削除しますか？\n削除した記録は元に戻せません。";
+
+  if(!confirm(message)) return;
+
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+};
+
+function renderAll(){
+  document.getElementById("s-wage").value = db.wage;
+  updatePersonOptions();
+  renderHome();
+  renderPeople();
+  renderHistory();
+}
+
 renderAll();
 </script>
-
 </body>
 </html>
